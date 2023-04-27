@@ -1,0 +1,75 @@
+SELECT *
+FROM public."CovidDeaths"
+WHERE CONTINENT IS NOT NULL 
+ORDER BY 3,4
+
+--SELECT *
+--FROM public."CovidVaccinations"
+--ORDER BY 3,4
+
+
+--data that we'll be working on
+
+SELECT location, date,total_cases, new_cases, total_deaths, population
+FROM public."CovidDeaths"
+ORDER BY 1,2
+
+
+--Total cases over total deaths  (% of people dying)
+
+SELECT location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 AS DeathPercentage
+FROM public."CovidDeaths"
+WHERE location like '%igeria%'
+ORDER BY 1,2
+
+
+--Total cases versus population
+--shows what % of people has covid
+
+SELECT location, date, population, total_cases, (total_cases/population)*100 AS CovidInfectedPercentage
+FROM public."CovidDeaths"
+ORDER BY 1,2
+
+
+--countries with highest infection rate compared to population
+
+SELECT location, population, MAX(total_cases) AS HighestInfectionCount, MAX((total_cases/population))*100 AS PercentPopulationInfected
+FROM public."CovidDeaths"
+GROUP BY location, population
+ORDER BY PercentPopulationInfected DESC
+
+
+--Countries with highest death count by population
+
+SELECT location, MAX(total_deaths) AS TotalDeathCount
+FROM public."CovidDeaths"
+WHERE CONTINENT IS NOT NULL 
+GROUP BY location
+ORDER BY TotalDeathCount DESC
+
+
+--highest death count by continent
+
+SELECT continent, MAX(total_deaths) AS TotalDeathCount
+FROM public."CovidDeaths"
+WHERE CONTINENT IS NOT NULL 
+GROUP BY continent
+ORDER BY TotalDeathCount DESC
+
+
+--Global numbers
+
+SELECT SUM(new_cases) AS total_cases, SUM(CAST(new_deaths as int), SUM(CAST(new_deaths as int)/SUM(new_cases)
+FROM public."CovidDeaths"
+WHERE continent IS NOT NULL
+GROUP BY date
+ORDER BY 1,2
+																	   
+		
+--Total population vs vaccination
+																	   
+SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
+FROM PUBLIC."CovidDeaths" dea
+JOIN PUBLIC."CovidVaccine" vac
+ON dea.location=vac.location
+and dea.date=vac.date
