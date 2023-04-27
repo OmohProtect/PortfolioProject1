@@ -1,4 +1,4 @@
-# PortfolioProject1
+# Exploratory Analysis of Covid with SQL
 Covid death and vaccination exploratory analysis
 
 1. Downloaded the two .xlsx files
